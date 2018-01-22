@@ -162,7 +162,7 @@ else:
   CB=$(echo -e "
 try:
   import boto
-except ImportError, e:
+except ImportError:
   print ('FAIL')
 else:
   print ('YES')
