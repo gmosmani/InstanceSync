@@ -55,7 +55,7 @@ EOF
 
   cat > /tmp/swappiness.sh <<EOF
 #!/usr/bin/env bash
-SWAPPINESS=\$(sysctl -a | grep vm.swappiness | awk -F' = ' '{print \$2}')
+SWAPPINESS=\$(sysctl -a | grep vm.swappiness | awk -F' = ' '{print (\$2)}')
 
 if [ "\${SWAPPINESS}" != 60 ];then
   sysctl vm.swappiness=60
@@ -153,9 +153,9 @@ function ISTHISAMAZON() {
 try:
   import boto.roboto.awsqueryservice
 except ImportError:
-  print 'FAIL'
+  print ('FAIL')
 else:
-  print 'YES'
+  print ('YES')
 " | python)
 
   # Check for known BOTO Python Modules
@@ -163,9 +163,9 @@ else:
 try:
   import boto
 except ImportError, e:
-  print 'FAIL'
+  print ('FAIL')
 else:
-  print 'YES'
+  print ('YES')
 " | python)
 
   if [ "${AK}" == "YES" ] || [ "${AB}" == "YES" ] || [ "${CB}" == "YES" ];then
@@ -290,8 +290,8 @@ function AMAZONPOSTPROCESSES() {
   if [ "${AK}" == "YES" ];then
     echo -e "# Post Migration Script
 REL=\"/etc/yum/vars/releasever\"
-VER=\"\$( cat /etc/issue | head -n 1 | awk '{print \$3}' )\"
-echo \"\$( echo \${VER} | awk -F '.' '{print \$1}' )\" | tee \${REL}
+VER=\"\$( cat /etc/issue | head -n 1 | awk '{print (\$3)}' )\"
+echo \"\$( echo \${VER} | awk -F '.' '{print (\$1)}' )\" | tee \${REL}
 PKS=\"epel-release system-release sysvinit perl-io perl-file perl-http \"
 PKS+=\"perl-lwp perl-net aws perl-libwww\"
 for pkg in \${PKS};do
@@ -516,8 +516,8 @@ function RSYNCCHECKANDSET() {
     exit 1
   else
     RSYNC_VERSION_LINE=$(rsync --version | grep -E "version\ [0-9].[0-9].[0-9]")
-    RSYNC_VERSION_NUM=$(echo ${RSYNC_VERSION_LINE} | awk '{print $3}')
-    RSYNC_VERSION=$(echo ${RSYNC_VERSION_NUM} | awk -F'.' '{print $1}')
+    RSYNC_VERSION_NUM=$(echo ${RSYNC_VERSION_LINE} | awk '{print ($3)}')
+    RSYNC_VERSION=$(echo ${RSYNC_VERSION_NUM} | awk -F'.' '{print ($1)}')
     if [ "${RSYNC_VERSION}" -ge "3" ];then
       RSYNC_VERSION_COMP="yes"
     fi
